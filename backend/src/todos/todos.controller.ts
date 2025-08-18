@@ -18,6 +18,23 @@ export class TodosController {
     return this.todosService.createTodo(createTodoDto, user);
   }
 
+  @Get('/monthly-completion-rates')
+  getMonthlyCompletionRates(
+    @Query('year') year: number,
+    @Query('month') month: number,
+    @GetUser() user: User,
+  ): Promise<any[]> {
+    return this.todosService.getMonthlyCompletionRates(year, month, user);
+  }
+
+  @Get('/completion-rate/:date')
+  getCompletionRate(
+    @Param('date') date: string,
+    @GetUser() user: User,
+  ): Promise<number> {
+    return this.todosService.getCompletionRate(date, user);
+  }
+
   @Get('/:date')
   getTodosByDate(
     @Param('date') date: string,
@@ -41,22 +58,5 @@ export class TodosController {
     @GetUser() user: User,
   ): Promise<void> {
     return this.todosService.deleteTodo(id, user);
-  }
-
-  @Get('/completion-rate/:date')
-  getCompletionRate(
-    @Param('date') date: string,
-    @GetUser() user: User,
-  ): Promise<number> {
-    return this.todosService.getCompletionRate(date, user);
-  }
-
-  @Get('/monthly-completion-rates')
-  getMonthlyCompletionRates(
-    @Query('year') year: number,
-    @Query('month') month: number,
-    @GetUser() user: User,
-  ): Promise<any[]> {
-    return this.todosService.getMonthlyCompletionRates(year, month, user);
   }
 }

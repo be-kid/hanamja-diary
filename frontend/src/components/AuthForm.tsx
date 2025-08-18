@@ -66,28 +66,32 @@ const AuthForm: React.FC<AuthFormProps> = ({ isSignup, onSubmit, onCheckNickname
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>닉네임:</label>
-        <input
-          type="text"
-          value={nickname}
-          onChange={handleNicknameChange}
-          minLength={4}
-          maxLength={20}
-          required
-        />
-        {isSignup && (
-          <button type="button" onClick={handleManualNicknameCheck} style={{ marginLeft: '10px' }}>
-            중복검사
-          </button>
-        )}
-        {nicknameError && nicknameError !== 'duplicate' && <p style={{ color: 'red' }}>{nicknameError}</p>}
-        {nicknameCheckMessage && <p style={{ color: nicknameCheckMessage.includes('사용 가능') ? 'green' : 'red' }}>{nicknameCheckMessage}</p>}
+      <div className="form-group">
+        <label htmlFor="nickname">닉네임:</label>
+        <div className="input-with-button">
+          <input
+            type="text"
+            id="nickname"
+            value={nickname}
+            onChange={handleNicknameChange}
+            minLength={4}
+            maxLength={20}
+            required
+          />
+          {isSignup && (
+            <button type="button" onClick={handleManualNicknameCheck} className="check-button">
+              중복검사
+            </button>
+          )}
+        </div>
+        {nicknameError && nicknameError !== 'duplicate' && <p className="error-message">{nicknameError}</p>}
+        {nicknameCheckMessage && <p className={nicknameCheckMessage.includes('사용 가능') ? 'success-message' : 'error-message'}>{nicknameCheckMessage}</p>}
       </div>
-      <div>
-        <label>비밀번호:</label>
+      <div className="form-group">
+        <label htmlFor="password">비밀번호:</label>
         <input
           type="password"
+          id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           minLength={4}
@@ -96,27 +100,28 @@ const AuthForm: React.FC<AuthFormProps> = ({ isSignup, onSubmit, onCheckNickname
         />
       </div>
       {isSignup && (
-        <div>
-          <label>비밀번호 확인:</label>
+        <div className="form-group">
+          <label htmlFor="passwordConfirm">비밀번호 확인:</label>
           <input
             type="password"
+            id="passwordConfirm"
             value={passwordConfirm}
             onChange={handlePasswordConfirmChange}
             required
           />
-          {passwordConfirmError && <p style={{ color: 'red' }}>{passwordConfirmError}</p>}
+          {passwordConfirmError && <p className="error-message">{passwordConfirmError}</p>}
         </div>
       )}
       {isSignup && (
-        <div>
-          <label>성별:</label>
-          <select value={gender} onChange={(e) => setGender(e.target.value as '남자' | '여자')}>
+        <div className="form-group">
+          <label htmlFor="gender">성별:</label>
+          <select id="gender" value={gender} onChange={(e) => setGender(e.target.value as '남자' | '여자')}>
             <option value="남자">남자</option>
             <option value="여자">여자</option>
           </select>
         </div>
       )}
-      <button type="submit">{isSignup ? '회원가입' : '로그인'}</button>
+      <button type="submit" className="submit-button">{isSignup ? '회원가입' : '로그인'}</button>
     </form>
   );
 };

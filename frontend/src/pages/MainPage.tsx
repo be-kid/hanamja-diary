@@ -92,51 +92,32 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
+    <div className="page-container">
       <h1>오늘의 할일</h1>
 
-      {/* 할일 추가 */}
-      <div style={{ display: 'flex', marginBottom: '20px' }}>
+      <div className="add-todo-section">
         <input
           type="text"
           value={newTodoContent}
           onChange={(e) => setNewTodoContent(e.target.value)}
           placeholder="새로운 할일 추가"
-          style={{ flexGrow: 1, padding: '10px', fontSize: '16px' }}
         />
-        <button onClick={handleAddTodo} style={{ padding: '10px 15px', fontSize: '16px', marginLeft: '10px' }}>
-          추가
-        </button>
+        <button onClick={handleAddTodo}>추가</button>
       </div>
 
-      {/* 할일 목록 */}
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+      <ul className="todo-list">
         {todos.length === 0 ? (
-          <p>오늘 할일이 없습니다.</p>
+          <p className="text-center">오늘 할일이 없습니다.</p>
         ) : (
           todos.map((todo) => (
-            <li
-              key={todo.id}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '10px',
-                borderBottom: '1px solid #eee',
-                textDecoration: todo.is_completed ? 'line-through' : 'none',
-                color: todo.is_completed ? '#aaa' : '#333',
-              }}
-            >
+            <li key={todo.id} className="todo-item">
               <input
                 type="checkbox"
                 checked={todo.is_completed}
                 onChange={() => handleToggleComplete(todo.id, todo.is_completed)}
-                style={{ marginRight: '10px' }}
               />
-              <span style={{ flexGrow: 1 }}>{todo.content}</span>
-              <button
-                onClick={() => handleDeleteTodo(todo.id)}
-                style={{ background: 'red', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
-              >
+              <span className="todo-content">{todo.content}</span>
+              <button onClick={() => handleDeleteTodo(todo.id)} className="delete-button">
                 삭제
               </button>
             </li>
@@ -144,16 +125,11 @@ const MainPage: React.FC = () => {
         )}
       </ul>
 
-      {/* 달성률 */}
-      <div style={{ marginTop: '20px', fontSize: '18px', fontWeight: 'bold' }}>
+      <div className="completion-rate">
         오늘의 달성률: {completionRate.toFixed(0)}%
       </div>
 
-      {/* 달력 페이지로 이동 버튼 */}
-      <button
-        onClick={() => navigate('/calendar')}
-        style={{ marginTop: '30px', padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
-      >
+      <button onClick={() => navigate('/calendar')} className="navigate-button">
         달력 보기
       </button>
     </div>

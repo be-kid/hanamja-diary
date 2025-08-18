@@ -1,38 +1,192 @@
-.App {
-  text-align: center;
+/* frontend/src/App.css */
+
+/* Page Containers */
+.page-container {
+  padding: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Form Groups */
+.form-group {
+  margin-bottom: 15px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.input-with-button {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
+}
+
+.input-with-button input {
+  flex-grow: 1;
+  margin-bottom: 0; /* Remove default margin-bottom */
+}
+
+/* Buttons */
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #007bff;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.check-button {
+  background-color: #6c757d; /* Gray */
+  padding: 10px 15px;
+  font-size: 15px;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.check-button:hover {
+  background-color: #5a6268;
+}
+
+/* Todo List */
+.add-todo-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-todo-section input {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-item {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-item input[type="checkbox"] {
+  margin-right: 10px;
+  width: auto; /* Override 100% width */
+  margin-bottom: 0;
+}
+
+.todo-content {
+  flex-grow: 1;
+  word-break: break-word; /* Long text wrapping */
+}
+
+.todo-item.completed .todo-content {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.delete-button {
+  background-color: #dc3545; /* Red */
+  padding: 6px 10px;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.completion-rate {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745; /* Green for success */
+}
+
+.navigate-button {
+  width: 100%;
+  margin-top: 30px;
+  background-color: #17a2b8; /* Info blue */
+}
+
+.navigate-button:hover {
+  background-color: #138496;
+}
+
+/* Calendar Page Specific */
+.react-calendar-custom {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.125em;
+}
+
+.react-calendar-custom .react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+  font-size: 16px;
+  color: #333;
+}
+
+/* General day tile */
+.react-calendar-custom .react-calendar__month-view__days__day {
+  color: #333; /* Default day color for current month */
+}
+
+/* Neighboring month (other month's days) */
+.react-calendar-custom .react-calendar__month-view__days__day--neighboringMonth {
+  color: #ccc; /* Gray for other months */
+}
+
+/* Weekends in the current month */
+.react-calendar-custom .react-calendar__month-view__days__day--weekend {
+  color: #d10000; /* Red for weekends */
+}
+
+/* Weekends in neighboring months */
+.react-calendar-custom .react-calendar__month-view__days__day--weekend.react-calendar__month-view__days__day--neighboringMonth {
+  color: #ff8a8a; /* Lighter red */
+}
+
+.react-calendar-custom .react-calendar__tile--active {
+  background-color: #007bff !important;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.react-calendar-custom .react-calendar__tile--now {
+  background-color: #e6f6ff;
+  color: black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.tile-today {
+  color: black;
+}
+
+.todo-item-simple {
+  padding: 8px 0;
+  border-bottom: 1px dotted #eee;
+  font-size: 15px;
+  color: #555;
+}
+
+.todo-item-simple:last-child {
+  border-bottom: none;
+}
+
+/* Utility classes from index.css for consistency */
+.text-center {
+  text-align: center;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
+.margin-top-30 {
+  margin-top: 30px;
 }

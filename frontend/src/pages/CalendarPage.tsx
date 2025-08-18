@@ -90,9 +90,9 @@ const CalendarPage: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
+    <div className="page-container">
       <h1>달력</h1>
-      <button onClick={() => navigate('/')} style={{ marginBottom: '20px', padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}>
+      <button onClick={() => navigate('/')} className="navigate-button margin-bottom-20">
         메인으로 돌아가기
       </button>
 
@@ -105,15 +105,25 @@ const CalendarPage: React.FC = () => {
           }
         }}
         tileContent={tileContent}
+        className="react-calendar-custom"
+        locale="ko-KR"
+        calendarType="gregory" // 일요일 시작
+        tileClassName={({ date, view }) => {
+          if (view === 'month' && date.toDateString() === new Date().toDateString()) {
+            return 'tile-today';
+          }
+          return null;
+        }}
+        formatShortWeekday={(locale, date) => ['일', '월', '화', '수', '목', '금', '토'][date.getDay()]}
       />
 
-      <h2 style={{ marginTop: '30px' }}>{date.toLocaleDateString()}의 할일</h2>
+      <h2 className="text-center margin-top-30">{date.toLocaleDateString()}의 할일</h2>
       {selectedDateTodos.length === 0 ? (
-        <p>선택된 날짜에 할일이 없습니다.</p>
+        <p className="text-center">선택된 날짜에 할일이 없습니다.</p>
       ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
+        <ul className="todo-list">
           {selectedDateTodos.map(todo => (
-            <li key={todo.id} style={{ padding: '8px 0', borderBottom: '1px dotted #eee', textDecoration: todo.is_completed ? 'line-through' : 'none' }}>
+            <li key={todo.id} className="todo-item-simple">
               {todo.content}
             </li>
           ))}

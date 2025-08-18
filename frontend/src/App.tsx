@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import MainPage from './pages/MainPage';
-import CalendarPage from './pages/CalendarPage'; // CalendarPage 임포트
-import './App.css';
+import CalendarPage from './pages/CalendarPage';
+import './App.css'; // App.css는 이제 비어있거나 최소한의 스타일만 포함
+import './index.css'; // 전역 스타일 임포트
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
               <Link to="/">메인</Link>
             </li>
             <li>
-              <Link to="/calendar">달력</Link> {/* 달력 페이지 링크 추가 */}
+              <Link to="/calendar">달력</Link>
             </li>
           </ul>
         </nav>
@@ -31,7 +32,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/" element={<MainPage />} />
-          <Route path="/calendar" element={<CalendarPage />} /> {/* 달력 페이지 라우트 */}
+          <Route path="/calendar" element={<CalendarPage />} />
         </Routes>
       </div>
     </Router>

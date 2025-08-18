@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="page-container">
       <h2>로그인</h2>
       <AuthForm isSignup={false} onSubmit={handleLogin} />
     </div>

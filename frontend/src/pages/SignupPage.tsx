@@ -29,7 +29,7 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="page-container">
       <h2>회원가입</h2>
       <AuthForm
         isSignup={true}
