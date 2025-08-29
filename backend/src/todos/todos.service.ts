@@ -54,4 +54,8 @@ export class TodosService {
   ): Promise<{ date: string; rate: number }[]> {
     return this.todosRepository.getMonthlyCompletionRates(year, month, user);
   }
+
+  async getOverallMonthlyCompletionRate(year: number, month: number, user: User): Promise<number> {
+    return this.todosRepository.getOverallMonthlyCompletionRate(year, month, user);
+  }
 }

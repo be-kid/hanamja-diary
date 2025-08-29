@@ -27,6 +27,15 @@ export class TodosController {
     return this.todosService.getMonthlyCompletionRates(year, month, user);
   }
 
+  @Get('/overall-monthly-completion-rate')
+  getOverallMonthlyCompletionRate(
+    @Query('year') year: number,
+    @Query('month') month: number,
+    @GetUser() user: User,
+  ): Promise<number> {
+    return this.todosService.getOverallMonthlyCompletionRate(year, month, user);
+  }
+
   @Get('/completion-rate/:date')
   getCompletionRate(
     @Param('date') date: string,

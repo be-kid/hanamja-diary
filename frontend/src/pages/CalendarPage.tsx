@@ -20,6 +20,7 @@ const CalendarPage: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const [monthlyRates, setMonthlyRates] = useState<CompletionRate[]>([]);
   const [selectedDateTodos, setSelectedDateTodos] = useState<Todo[]>([]);
+  const [overallMonthlyRate, setOverallMonthlyRate] = useState<number>(0);
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
 
@@ -35,6 +36,25 @@ const CalendarPage: React.FC = () => {
       setMonthlyRates(response.data);
     } catch (error: any) {
       console.error('월별 달성률 불러오기 실패:', error.response?.data || error.message);
+      if (error.response?.status === 401) {
+        alert('인증이 만료되었습니다. 다시 로그인해주세요.');
+        navigate('/login');
+      }
+    }
+  }, [accessToken, navigate]);
+
+  const fetchOverallMonthlyCompletionRate = useCallback(async (year: number, month: number) => {
+    if (!accessToken) {
+      navigate('/login');
+      return;
+    }
+    try {
+      const response = await axios.get<number>(`http://localhost:3001/todos/overall-monthly-completion-rate?year=${year}&month=${month}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      setOverallMonthlyRate(response.data);
+    } catch (error: any) {
+      console.error('월별 전체 달성률 불러오기 실패:', error.response?.data || error.message);
       if (error.response?.status === 401) {
         alert('인증이 만료되었습니다. 다시 로그인해주세요.');
         navigate('/login');
@@ -64,9 +84,12 @@ const CalendarPage: React.FC = () => {
   }, [accessToken, navigate]);
 
   useEffect(() => {
-    fetchMonthlyCompletionRates(date.getFullYear(), date.getMonth() + 1);
-    fetchTodosForSelectedDate(date); // 페이지 로드 시 현재 날짜의 할일도 불러옴
-  }, [date, fetchMonthlyCompletionRates, fetchTodosForSelectedDate]);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    fetchMonthlyCompletionRates(year, month);
+    fetchOverallMonthlyCompletionRate(year, month);
+    fetchTodosForSelectedDate(date);
+  }, [date, fetchMonthlyCompletionRates, fetchOverallMonthlyCompletionRate, fetchTodosForSelectedDate]);
 
   const handleDateChange = (value: any) => {
     if (value instanceof Date) {
@@ -96,12 +119,22 @@ const CalendarPage: React.FC = () => {
         메인으로 돌아가기
       </button>
 
+      <div className="monthly-rate-display" style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <h3>{date.getFullYear()}년 {date.getMonth() + 1}월 전체 달성도</h3>
+        <p style={{ fontSize: '24px', fontWeight: 'bold', color: overallMonthlyRate === 100 ? 'green' : overallMonthlyRate > 0 ? 'orange' : 'gray' }}>
+          {overallMonthlyRate.toFixed(0)}%
+        </p>
+      </div>
+
       <Calendar
         onChange={handleDateChange}
         value={date}
         onActiveStartDateChange={({ activeStartDate, view }) => {
           if (view === 'month' && activeStartDate instanceof Date) {
-            fetchMonthlyCompletionRates(activeStartDate.getFullYear(), activeStartDate.getMonth() + 1);
+            const year = activeStartDate.getFullYear();
+            const month = activeStartDate.getMonth() + 1;
+            fetchMonthlyCompletionRates(year, month);
+            fetchOverallMonthlyCompletionRate(year, month);
           }
         }}
         tileContent={tileContent}

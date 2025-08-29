@@ -66,4 +66,23 @@ export class TodosRepository {
 
     return rates;
   }
+
+  async getOverallMonthlyCompletionRate(year: number, month: number, user: User): Promise<number> {
+    const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
+    const endDate = `${year}-${String(month).padStart(2, '0')}-${new Date(year, month, 0).getDate()}`;
+
+    const result = await this.repository
+      .createQueryBuilder('todo')
+      .select('COUNT(CASE WHEN todo.is_completed = TRUE THEN 1 ELSE NULL END)', 'completedCount')
+      .addSelect('COUNT(todo.id)', 'totalCount')
+      .where('todo.user_id = :userId', { userId: user.id })
+      .andWhere('todo.date BETWEEN :startDate AND :endDate', { startDate, endDate })
+      .getRawOne();
+
+    if (!result || result.totalCount === '0') {
+      return 0;
+    }
+
+    return (parseInt(result.completedCount) / parseInt(result.totalCount)) * 100;
+  }
 }
