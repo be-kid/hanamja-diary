@@ -4,13 +4,14 @@ import { TodosController } from './todos.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Todo } from './todo.entity';
 import { PassportModule } from '@nestjs/passport';
+import { TodosRepository } from './todos.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Todo]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  providers: [TodosService],
+  providers: [TodosService, TodosRepository],
   controllers: [TodosController],
 })
 export class TodosModule {}

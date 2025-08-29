@@ -1,44 +1,24 @@
 import {
   Injectable,
   UnauthorizedException,
-  ConflictException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { SignUpDto } from './dto/signup.dto';
+import { UsersRepository } from '../users/users.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>,
-    private jwtService: JwtService,
+    private readonly usersRepository: UsersRepository,
+    private readonly jwtService: JwtService,
   ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<void> {
-    const { nickname, password, gender } = signUpDto;
-
-    const existingUser = await this.usersRepository.findOneBy({ nickname });
-    if (existingUser) {
-      throw new ConflictException('이미 존재하는 닉네임입니다.');
-    }
-
-    const salt = await bcrypt.genSalt();
-    const password_hash = await bcrypt.hash(password, salt);
-
-    const user = this.usersRepository.create({
-      nickname,
-      password_hash,
-      gender,
-    });
-
     try {
-      await this.usersRepository.save(user);
+      await this.usersRepository.createUser(signUpDto);
     } catch (error) {
-      // 데이터베이스 저장 중 발생할 수 있는 다른 오류 처리
       throw new Error('회원가입 중 오류가 발생했습니다.');
     }
   }
@@ -47,7 +27,7 @@ export class AuthService {
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
     const { nickname, password } = authCredentialsDto;
-    const user = await this.usersRepository.findOneBy({ nickname });
+    const user = await this.usersRepository.findOneByNickname(nickname);
 
     if (user && (await bcrypt.compare(password, user.password_hash))) {
       const payload = { nickname };
@@ -59,8 +39,7 @@ export class AuthService {
   }
 
   async checkNickname(nickname: string): Promise<{ available: boolean }> {
-    const user = await this.usersRepository.findOneBy({ nickname });
-    console.log(user);
+    const user = await this.usersRepository.findOneByNickname(nickname);
     return { available: !user };
   }
 }
